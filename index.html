@@ -7,59 +7,108 @@
 <title>Plano Alimentar</title>
 <style>
   :root{
-    --bg:#f7f5f2;
+    --bg:#fffaf0;
     --card:#ffffff;
-    --ink:#1f2a24;
-    --ink-soft:#5b6a61;
-    --accent:#2f6b4f;
-    --accent-soft:#e7f1ec;
-    --border:#e5e0d8;
-    --radius:16px;
+    --ink:#2b1a4a;
+    --ink-soft:#7b6a99;
+    --border:#f0e4ff;
+    --radius:20px;
+
+    /* cor de cada refeição */
+    --cafe-1:#ff7a45; --cafe-2:#ffb800;
+    --almoco-1:#ff3d77; --almoco-2:#ff7a45;
+    --lanche-1:#a855f7; --lanche-2:#ec4899;
+    --jantar-1:#2563eb; --jantar-2:#06b6d4;
+
+    --accent-1:var(--cafe-1);
+    --accent-2:var(--cafe-2);
   }
   *{box-sizing:border-box;}
   body{
     margin:0;
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    background:var(--bg);
+    background:
+      radial-gradient(900px 400px at 15% -10%, #ffe8c9 0%, transparent 60%),
+      radial-gradient(900px 400px at 110% 10%, #ffd6ec 0%, transparent 55%),
+      var(--bg);
     color:var(--ink);
-    padding:0 0 48px;
+    padding:0 0 56px;
+    transition:background 0.3s ease;
   }
+  body.m-almoco{ background:
+      radial-gradient(900px 400px at 15% -10%, #ffd9d9 0%, transparent 60%),
+      radial-gradient(900px 400px at 110% 10%, #ffe3c2 0%, transparent 55%),
+      var(--bg); }
+  body.m-lanche{ background:
+      radial-gradient(900px 400px at 15% -10%, #f0d9ff 0%, transparent 60%),
+      radial-gradient(900px 400px at 110% 10%, #ffd6ec 0%, transparent 55%),
+      var(--bg); }
+  body.m-jantar{ background:
+      radial-gradient(900px 400px at 15% -10%, #cfe3ff 0%, transparent 60%),
+      radial-gradient(900px 400px at 110% 10%, #c8f6f0 0%, transparent 55%),
+      var(--bg); }
+
   header{
-    padding:28px 20px 18px;
+    padding:34px 20px 20px;
     text-align:center;
   }
+  header .badge{
+    display:inline-block;
+    font-size:0.72rem;
+    font-weight:800;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:#fff;
+    background:linear-gradient(135deg, var(--accent-1), var(--accent-2));
+    padding:5px 14px;
+    border-radius:999px;
+    margin-bottom:10px;
+    transition:background 0.3s ease;
+  }
   header h1{
-    margin:0 0 4px;
-    font-size:1.4rem;
-    letter-spacing:-0.01em;
+    margin:0 0 6px;
+    font-size:1.75rem;
+    font-weight:800;
+    letter-spacing:-0.02em;
+    background:linear-gradient(135deg, var(--accent-1), var(--accent-2));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    transition:background 0.3s ease;
   }
   header p{
     margin:0;
     color:var(--ink-soft);
     font-size:0.85rem;
+    font-weight:600;
   }
   nav.meals{
     display:flex;
-    gap:8px;
+    gap:10px;
     overflow-x:auto;
-    padding:4px 20px 18px;
+    padding:6px 20px 22px;
     -webkit-overflow-scrolling:touch;
   }
   nav.meals button{
     flex:0 0 auto;
-    border:1px solid var(--border);
-    background:var(--card);
+    border:none;
+    background:#fff;
     color:var(--ink-soft);
-    padding:10px 16px;
+    padding:12px 18px;
     border-radius:999px;
-    font-size:0.85rem;
-    font-weight:600;
+    font-size:0.88rem;
+    font-weight:700;
     white-space:nowrap;
+    box-shadow:0 2px 8px rgba(43,26,74,0.08);
   }
+  nav.meals button[data-target="cafe"].active{ background:linear-gradient(135deg, var(--cafe-1), var(--cafe-2)); }
+  nav.meals button[data-target="almoco"].active{ background:linear-gradient(135deg, var(--almoco-1), var(--almoco-2)); }
+  nav.meals button[data-target="lanche"].active{ background:linear-gradient(135deg, var(--lanche-1), var(--lanche-2)); }
+  nav.meals button[data-target="jantar"].active{ background:linear-gradient(135deg, var(--jantar-1), var(--jantar-2)); }
   nav.meals button.active{
-    background:var(--accent);
-    border-color:var(--accent);
     color:#fff;
+    box-shadow:0 6px 16px rgba(43,26,74,0.22);
+    transform:translateY(-1px);
   }
   main{
     padding:0 20px;
@@ -71,7 +120,9 @@
   }
   section.meal.active{
     display:block;
+    animation:fadein 0.25s ease;
   }
+  @keyframes fadein{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);} }
   .meal-head{
     display:flex;
     align-items:baseline;
@@ -80,26 +131,36 @@
   }
   .meal-head h2{
     margin:0;
-    font-size:1.15rem;
+    font-size:1.3rem;
+    font-weight:800;
   }
   .meal-head span{
     font-size:0.8rem;
-    color:var(--ink-soft);
-    font-weight:600;
+    color:#fff;
+    font-weight:700;
+    background:linear-gradient(135deg, var(--accent-1), var(--accent-2));
+    padding:4px 11px;
+    border-radius:999px;
   }
   .card{
     background:var(--card);
-    border:1px solid var(--border);
+    border:2px solid var(--border);
     border-radius:var(--radius);
-    padding:16px 18px;
-    margin-bottom:12px;
+    padding:18px 20px;
+    margin-bottom:14px;
+    box-shadow:0 4px 18px rgba(43,26,74,0.06);
   }
   .card h3{
-    margin:0 0 10px;
-    font-size:0.75rem;
+    margin:0 0 12px;
+    font-size:0.72rem;
     text-transform:uppercase;
-    letter-spacing:0.04em;
-    color:var(--accent);
+    letter-spacing:0.06em;
+    font-weight:800;
+    color:#fff;
+    display:inline-block;
+    background:linear-gradient(135deg, var(--accent-1), var(--accent-2));
+    padding:4px 12px;
+    border-radius:999px;
   }
   ul.items{
     list-style:none;
@@ -107,68 +168,83 @@
     padding:0;
   }
   ul.items li{
-    padding:9px 0;
-    border-top:1px solid var(--border);
-    font-size:0.95rem;
-    line-height:1.4;
+    padding:11px 0;
+    border-top:1px dashed var(--border);
+    font-size:1rem;
+    font-weight:600;
+    line-height:1.5;
   }
   ul.items li:first-child{
     border-top:none;
   }
   .amt{
     color:var(--ink-soft);
-    font-weight:500;
+    font-weight:600;
+    font-size:0.92rem;
   }
   .ou{
-    color:var(--accent);
-    font-weight:700;
-    font-size:0.78rem;
+    color:#fff;
+    background:linear-gradient(135deg, var(--accent-1), var(--accent-2));
+    font-weight:800;
+    font-size:0.72rem;
+    text-transform:uppercase;
+    padding:2px 8px;
+    border-radius:999px;
+    margin:0 2px;
+    white-space:nowrap;
   }
   details.sub{
-    margin-top:12px;
+    margin-top:14px;
   }
   details.sub summary{
     cursor:pointer;
-    font-weight:600;
-    font-size:0.88rem;
-    color:var(--accent);
-    padding:8px 0;
+    font-weight:800;
+    font-size:0.9rem;
+    color:var(--accent-1);
+    padding:10px 14px;
     list-style:none;
+    background:#fff;
+    border-radius:999px;
+    box-shadow:0 2px 8px rgba(43,26,74,0.08);
+    display:inline-block;
   }
   details.sub summary::-webkit-details-marker{display:none;}
   details.sub summary::before{
-    content:"+ ";
+    content:"✨ + ";
   }
   details.sub[open] summary::before{
     content:"– ";
   }
   details.sub .card{
-    background:var(--accent-soft);
+    background:linear-gradient(135deg, color-mix(in srgb, var(--accent-1) 10%, #fff), color-mix(in srgb, var(--accent-2) 10%, #fff));
     border-color:transparent;
+    margin-top:10px;
   }
   footer{
     max-width:560px;
-    margin:28px auto 0;
+    margin:32px auto 0;
     padding:0 20px;
     text-align:center;
     color:var(--ink-soft);
     font-size:0.78rem;
+    font-weight:600;
     line-height:1.5;
   }
 </style>
 </head>
-<body>
+<body class="m-cafe">
 
 <header>
-  <h1>Plano Alimentar</h1>
+  <span class="badge">🍽️ Plano Alimentar</span>
+  <h1>Minha Dieta</h1>
   <p>Thulio Leitão De Figueiredo Nóbrega &middot; 28/10/2026</p>
 </header>
 
 <nav class="meals">
-  <button class="active" data-target="cafe">Café (07:30)</button>
-  <button data-target="almoco">Almoço (12:00)</button>
-  <button data-target="lanche">Lanche/Ceia (16:00)</button>
-  <button data-target="jantar">Jantar (19:00)</button>
+  <button class="active" data-target="cafe">☕ Café (07:30)</button>
+  <button data-target="almoco">🍛 Almoço (12:00)</button>
+  <button data-target="lanche">🥤 Lanche/Ceia (16:00)</button>
+  <button data-target="jantar">🌙 Jantar (19:00)</button>
 </nav>
 
 <main>
@@ -304,12 +380,27 @@
 </footer>
 
 <script>
+  const root = document.documentElement;
+  const colorMap = {
+    cafe:   ['--cafe-1','--cafe-2'],
+    almoco: ['--almoco-1','--almoco-2'],
+    lanche: ['--lanche-1','--lanche-2'],
+    jantar: ['--jantar-1','--jantar-2'],
+  };
+  function setAccent(target){
+    const cs = getComputedStyle(root);
+    const [v1, v2] = colorMap[target];
+    root.style.setProperty('--accent-1', cs.getPropertyValue(v1));
+    root.style.setProperty('--accent-2', cs.getPropertyValue(v2));
+    document.body.className = 'm-' + target;
+  }
   document.querySelectorAll('nav.meals button').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       document.querySelectorAll('nav.meals button').forEach(b=>b.classList.remove('active'));
       document.querySelectorAll('section.meal').forEach(s=>s.classList.remove('active'));
       btn.classList.add('active');
       document.getElementById(btn.dataset.target).classList.add('active');
+      setAccent(btn.dataset.target);
     });
   });
 </script>
